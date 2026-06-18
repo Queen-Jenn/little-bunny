@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello from Bunnyboo! 🐰</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS ──────────────────────────────────────────── */
+    :root {
+      --cloud:    #FDFAF6;
+      --rose:     #F2A7B3;
+      --rose-deep:#D97B8A;
+      --sage:     #A8C5A0;
+      --sage-deep:#6E9E65;
+      --butter:   #F9E4A0;
+      --ink:      #3B2E2E;
+      --muted:    #7A6060;
+      --radius:   20px;
+      --shadow:   0 4px 24px rgba(59,46,46,.10);
+    }
+
+    /* ── RESET & BASE ────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cloud);
+      color: var(--ink);
+      font-family: 'Nunito', sans-serif;
+      font-size: 17px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── SCATTERED DOTS BACKGROUND ───────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        radial-gradient(circle, var(--rose) 1.5px, transparent 1.5px),
+        radial-gradient(circle, var(--sage) 1.5px, transparent 1.5px);
+      background-size: 36px 36px, 60px 60px;
+      background-position: 0 0, 18px 18px;
+      opacity: .18;
+    }
+
+    /* ── LAYOUT WRAPPER ──────────────────────────────────── */
+    .page { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; padding: 0 20px 60px; }
+
+    /* ── HERO ─────────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 48px 0 36px;
+    }
+    .bunny-frame {
+      display: inline-block;
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .bunny-frame img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 6px solid white;
+      box-shadow: var(--shadow), 0 0 0 3px var(--rose);
+      display: block;
+    }
+    /* placeholder shown when no real photo yet */
+    .bunny-frame .placeholder {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose) 0%, var(--butter) 100%);
+      border: 6px solid white;
+      box-shadow: var(--shadow), 0 0 0 3px var(--rose);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 72px;
+    }
+    .bunny-badge {
+      position: absolute;
+      bottom: 4px; right: 4px;
+      background: var(--butter);
+      border: 3px solid white;
+      border-radius: 50%;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    }
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--rose-deep);
+    }
+    .hero .tagline {
+      font-size: .95rem;
+      color: var(--muted);
+      letter-spacing: .03em;
+    }
+
+    /* ── WAVY DIVIDER ─────────────────────────────────────── */
+    .wave { width: 100%; overflow: hidden; line-height: 0; margin: 12px 0; }
+    .wave svg { display: block; width: 100%; }
+
+    /* ── CARDS ────────────────────────────────────────────── */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .card-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .75rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      margin-bottom: 10px;
+    }
+    .card h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .card p { color: var(--muted); font-size: .97rem; }
+
+    /* ── STORY CARD ───────────────────────────────────────── */
+    .story-text {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1.08rem;
+      color: var(--ink);
+      line-height: 1.75;
+    }
+    .story-text strong { font-style: normal; color: var(--rose-deep); }
+
+    /* ── AUDIO PLAYER ─────────────────────────────────────── */
+    .audio-card { background: linear-gradient(135deg, #FFF0F3 0%, #FFF8EC 100%); }
+    .audio-inner {
+      display: flex; align-items: center; gap: 18px;
+    }
+    .play-btn {
+      flex-shrink: 0;
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--rose-deep);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(217,123,138,.4);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .play-btn:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(217,123,138,.5); }
+    .play-btn:active { transform: scale(.96); }
+    .play-btn svg { margin-left: 4px; }
+    .audio-meta h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem; font-weight: 700; margin-bottom: 3px;
+    }
+    .audio-meta p { font-size: .85rem; color: var(--muted); }
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #EDD5DA;
+      border-radius: 99px;
+      margin-top: 16px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--rose-deep);
+      border-radius: 99px;
+      transition: width .5s linear;
+    }
+    audio { display: none; }
+
+    /* ── BOOK SECTION ─────────────────────────────────────── */
+    .books-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .book-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(59,46,46,.08);
+      text-decoration: none;
+      color: var(--ink);
+      display: block;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .book-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(59,46,46,.14); }
+    .book-cover {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+      background: #F5E6EA;
+    }
+    .book-cover.placeholder-cover {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 42px;
+    }
+    .book-info { padding: 10px 10px 12px; }
+    .book-info .book-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: .9rem;
+      line-height: 1.2;
+      margin-bottom: 3px;
+    }
+    .book-info .book-author { font-size: .75rem; color: var(--muted); }
+    .book-info .book-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 10px;
+      background: var(--sage);
+      color: #2C4A27;
+      border-radius: 99px;
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .books-note {
+      font-size: .78rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding-top: 24px;
+      font-size: .82rem;
+      color: #BBA8A8;
+    }
+    .footer span { display: block; margin-bottom: 4px; }
+    .hearts { font-size: 1.2rem; letter-spacing: .15em; }
+
+    /* ── FLOATING ANIMATION ───────────────────────────────── */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .bunny-frame { animation: float 3.5s ease-in-out infinite; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bunny-frame { animation: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HERO ───────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="bunny-frame">
+      <!--
+        🐰 CUSTOMIZE: Replace the placeholder below with your bunny photo.
+        Swap out the .placeholder div for an <img> tag like this:
+        <img src="bunny.jpg" alt="Your bunny's name" />
+      -->
+      <div class="placeholder" role="img" aria-label="Bunny photo placeholder">🐰</div>
+      <div class="bunny-badge">✨</div>
+    </div>
+    <h1>Hello, I'm <em>Bunnyboo!</em></h1>
+    <p class="tagline">A snuggly friend with a big heart 🌸</p>
+  </section>
+
+  <!-- ── STORY ──────────────────────────────────────────── -->
+  <div class="card">
+    <div class="card-label">📖 My Story</div>
+    <p class="story-text">
+      Once upon a time, in a meadow full of clover and sunshine,
+      a little bunny was born with the floppiest ears and the softest fur.
+      She hopped through fields of wildflowers, collecting hugs for someone very special —
+      <strong>you!</strong>
+      <br /><br />
+      Now she's traveled all this way to be your very own friend.
+      Hold her close whenever you need a little comfort or a lot of love. 💛
+    </p>
+    <br />
+    <p style="font-size:.82rem; color:var(--muted); font-style:italic;">
+      ✏️ <strong>Customize tip:</strong> Edit the story above to be personal — use the child's name, a real memory, or a new adventure!
+    </p>
+  </div>
+
+  <!-- ── AUDIO ──────────────────────────────────────────── -->
+  <div class="card audio-card">
+    <div class="card-label">🎵 Bunnyboo's Lullaby</div>
+    <div class="audio-inner">
+      <button class="play-btn" id="playBtn" aria-label="Play lullaby">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
+          <polygon points="5,3 19,12 5,21" />
+        </svg>
+      </button>
+      <div class="audio-meta">
+        <h3 id="audioTitle">Soft Meadow Lullaby</h3>
+        <p id="audioStatus">Tap to listen 🌙</p>
+      </div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <!--
+      🎵 CUSTOMIZE: Add your own audio file here.
+      Replace "YOUR_AUDIO_FILE.mp3" with the path to your audio.
+      You can upload an MP3 to a free host like Cloudinary, Google Drive (public), or Netlify.
+    -->
+    <audio id="audioPlayer" src="YOUR_AUDIO_FILE.mp3" preload="none"></audio>
+  </div>
+
+  <!-- ── BOOKS ──────────────────────────────────────────── -->
+  <div class="card">
+    <div class="card-label">📚 Books We Love</div>
+    <h2>Storytime Favorites</h2>
+    <p>Great books to read together with your little one — tap to find them!</p>
+
+    <div class="books-grid">
+
+      <!--
+        📚 CUSTOMIZE: Replace each book card with a real Amazon affiliate link.
+        Steps:
+        1. Sign up at affiliate-program.amazon.com
+        2. Find the book on Amazon, grab your affiliate link
+        3. Replace href="#" with your link
+        4. Replace the emoji cover with: <img src="AMAZON_IMAGE_URL" class="book-cover" alt="book title" />
+        5. Update title and author
+      -->
+
+      <a href="#" class="book-card" target="_blank" rel="noopener">
+        <div class="book-cover placeholder-cover">🌙</div>
+        <div class="book-info">
+          <div class="book-title">Goodnight Moon</div>
+          <div class="book-author">Margaret Wise Brown</div>
+          <span class="book-btn">Find it →</span>
+        </div>
+      </a>
+
+      <a href="#" class="book-card" target="_blank" rel="noopener">
+        <div class="book-cover placeholder-cover">🐛</div>
+        <div class="book-info">
+          <div class="book-title">The Very Hungry Caterpillar</div>
+          <div class="book-author">Eric Carle</div>
+          <span class="book-btn">Find it →</span>
+        </div>
+      </a>
+
+      <a href="#" class="book-card" target="_blank" rel="noopener">
+        <div class="book-cover placeholder-cover">🐰</div>
+        <div class="book-info">
+          <div class="book-title">Guess How Much I Love You</div>
+          <div class="book-author">Sam McBratney</div>
+          <span class="book-btn">Find it →</span>
+        </div>
+      </a>
+
+      <a href="#" class="book-card" target="_blank" rel="noopener">
+        <div class="book-cover placeholder-cover">🌟</div>
+        <div class="book-info">
+          <div class="book-title">The Giving Tree</div>
+          <div class="book-author">Shel Silverstein</div>
+          <span class="book-btn">Find it →</span>
+        </div>
+      </a>
+
+    </div>
+    <p class="books-note">* Links may be Amazon affiliate links — they help keep Bunnyboo's magic going! ✨</p>
+  </div>
+
+  <!-- ── FOOTER ──────────────────────────────────────────── -->
+  <footer class="footer">
+    <span class="hearts">🐰 💛 🌸</span>
+    <span>Made with love, just for you.</span>
+    <span style="margin-top:6px; font-size:.72rem;">© 2025 Bunnyboo &amp; Friends</span>
+  </footer>
+
+</div>
+
+<script>
+  // ── AUDIO PLAYER LOGIC ──────────────────────────────────
+  const playBtn    = document.getElementById('playBtn');
+  const audio      = document.getElementById('audioPlayer');
+  const status     = document.getElementById('audioStatus');
+  const progress   = document.getElementById('progressFill');
+
+  const playIcon  = `<svg width="26" height="26" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>`;
+  const pauseIcon = `<svg width="26" height="26" viewBox="0 0 24 24" fill="white"><rect x="5" y="3" width="4" height="18" rx="1"/><rect x="15" y="3" width="4" height="18" rx="1"/></svg>`;
+
+  playBtn.addEventListener('click', () => {
+    if (audio.src.includes('YOUR_AUDIO_FILE')) {
+      status.textContent = '⚙️ Add an audio file to hear the lullaby!';
+      return;
+    }
+    if (audio.paused) {
+      audio.play();
+      playBtn.innerHTML = pauseIcon;
+      status.textContent = 'Playing… 🎵';
+    } else {
+      audio.pause();
+      playBtn.innerHTML = playIcon;
+      status.textContent = 'Paused — tap to continue 🌙';
+    }
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration) {
+      progress.style.width = (audio.currentTime / audio.duration * 100) + '%';
+    }
+  });
+
+  audio.addEventListener('ended', () => {
+    playBtn.innerHTML = playIcon;
+    status.textContent = 'Sweet dreams! 🌙';
+    progress.style.width = '0%';
+  });
+</script>
+
+</body>
+</html>
